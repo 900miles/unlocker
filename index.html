@@ -60,7 +60,7 @@ function checkIfEnterPressed(e) {
     
 //Auto-hide http link
 
-var has_https = window.location.href.substring(0,4) == "https";
+var has_https = window.location.href.substring(0,5) == "https";
 if(!has_https){
     document.getElementById("http-link").style.display = "none";
 }
