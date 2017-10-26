@@ -9,7 +9,7 @@
         <br /> <br />
         <p>Wanting to unblock <a href="twitch.html">Twitch</a>?</p>
         
-        <p style="font-size:0.8em; color:#777;"><i>Website not working? Try clicking <a href="http://websiteunblocker.tk/">here</a> and trying again.</i></p>
+        <p id="http-link" style="font-size:0.8em; color:#777;"><i>Website not working? Try clicking <a href="http://websiteunblocker.tk/">here</a> and trying again.</i></p>
     
     </div>
 </div>
@@ -56,6 +56,13 @@ function checkIfEnterPressed(e) {
         return false;
     }
     return true;
+}
+    
+//Auto-hide http link
+
+var has_https = window.location.href.substring(0,4) == "https";
+if(!has_https){
+    Document.getElementById("http-link").style.display = "none";
 }
 </script>
 
