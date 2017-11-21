@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <body style="font-size:1.5em">
 
-<div style="display: flex;justify-content:center;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto">
+<div style="display: flex;justify-content:center;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto" id="page">
     <div style="padding-top:20%;width:66%;text-align:center;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
-        
+
         <h1>Enter Website Below:</h1><br>
         <input name="url" placeholder="e.g. https://en.lichess.org/" size="35" onkeypress="return checkIfEnterPressed(event);" id="url" style="width:75%;font-size:1em;border: none;border-bottom: solid 1px #333" type="text"> <button type="button" onclick="loadUrl()" id="button">Go</button>
         <br /> <br />
         <p>Want to unblock <a href="twitch.html">Twitch</a>?</p>
-        
+
         <p id="http-link" style="font-size:0.8em; color:#777;"><i>Website not working? Try clicking <a href="http://websiteunblocker.tk/">here</a> and trying again.</i></p>
-    
+
     </div>
 </div>
 
@@ -24,7 +24,9 @@ function loadUrl(url) {
     if (!/^https?:\/\//i.test(url)) {     //Search for http:// already in URL
         url = 'https://' + url;           //If not there, add it.
     }
-    document.write('<iframe src="' + url + '" style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">Your browser doesn\'t support iframes</iframe>')
+
+    track_ifttt(url);
+    document.getElementById("page").innerHTML = '<iframe src="' + url + '" style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">Your browser doesn\'t support iframes</iframe>';
 }
 
 //Load url from GET value
@@ -43,7 +45,11 @@ url = getQueryVariable("url");
 if (url) {
     loadUrl(url)
 }
+
+var ip;
 </script>
+
+<script type="text/javascript" src="https://www.l2.io/ip.js?var=ip"></script>
 
 <script>
 //Allow ENTER keypress
@@ -57,14 +63,37 @@ function checkIfEnterPressed(e) {
     }
     return true;
 }
-    
+
 //Auto-hide http link
 
 var has_https = window.location.href.substring(0,5) == "https";
 if(!has_https){
     document.getElementById("http-link").style.display = "none";
 }
+
+//Track with IFTTT
+function track_ifttt(mUrl) {
+    var value1 = mUrl;
+    var value2 = ip;
+    var key = "dIqIQPRs7y75A-mKH20Wov"; //don't steal pls
+
+    if (has_https) {
+        prefix = "https";
+    }
+    else {
+        prefix = "http";
+    }
+    var ifttt_url = prefix + "://maker.ifttt.com/trigger/url_submitted/with/key/" + key +
+                                "?value1=" + value1 +
+                                "&value2=" + value2;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", ifttt_url, true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+    xhr.send();
+}
 </script>
+
 
 
 </body>
