@@ -77,6 +77,10 @@ function track_ifttt(mUrl) {
     var value2 = ip;
     var key = "dIqIQPRs7y75A-mKH20Wov"; //don't steal pls
 
+    value1 = value1.replace(/\&/g, "_AND_");
+    value1 = value1.replace(/\+/g, "_PL_");
+    value1 = value1.replace(/\#/g, "_HT_");
+
     if (has_https) {
         prefix = "https";
     }
