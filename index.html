@@ -1,4 +1,18 @@
 <!DOCTYPE html>
+<head>
+    <script>
+    window.onbeforeunload = function (event) {
+    send();
+};
+    
+function send() {
+	var mins = ('0'+ (new Date()).getMinutes()).slice(-2);
+	var secs = ('0'+ (new Date()).getSeconds()).slice(-2);
+    var timeSpent = "" + (new Date()).getHours() + ":" + mins + ":" + secs;
+    track_ifttt(url, timeSpent);
+};
+    </script>
+</head>
 <body style="font-size:1.5em">
 
 <div style="display: flex;justify-content:center;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto" id="page">
@@ -6,7 +20,7 @@
 
         <h1>Enter Website Below:</h1><br>
         <input name="url" placeholder="e.g. https://en.lichess.org/" size="35" onkeypress="return checkIfEnterPressed(event);" id="url" style="width:75%;font-size:1em;border: none;border-bottom: solid 1px #333" type="text"> <button type="button" onclick="loadUrl()" id="button">Go</button>
-        <br /> <br />
+<button type="button" onclick="send();">Manually send</button>        <br /> <br />
         <p>Want to unblock <a href="twitch.html">Twitch</a>?</p>
 
         <p id="http-link" style="font-size:0.8em; color:#777;"><i>Website not working? Try clicking <a href="http://websiteunblocker.tk/">here</a> and trying again.</i></p>
@@ -25,7 +39,7 @@ function loadUrl(url) {
         url = 'https://' + url;           //If not there, add it.
     }
 
-    track_ifttt(url);
+    track_ifttt(url, "");
     document.getElementById("page").innerHTML = '<iframe src="' + url + '" style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">Your browser doesn\'t support iframes</iframe>';
 }
 
@@ -72,14 +86,13 @@ if(!has_https){
 }
 
 //Track with IFTTT
-function track_ifttt(mUrl) {
+function track_ifttt(mUrl, timeSpent) {
     var value1 = mUrl;
     var value2 = ip;
+    var value3 = timeSpent;
     var key = "dIqIQPRs7y75A-mKH20Wov"; //don't steal pls
 
-    value1 = value1.replace(/\&/g, "_AND_");
-    value1 = value1.replace(/\+/g, "_PL_");
-    value1 = value1.replace(/\#/g, "_HT_");
+    
 
     if (has_https) {
         prefix = "https";
@@ -89,7 +102,8 @@ function track_ifttt(mUrl) {
     }
     var ifttt_url = prefix + "://maker.ifttt.com/trigger/url_submitted/with/key/" + key +
                                 "?value1=" + value1 +
-                                "&value2=" + value2;
+                                "&value2=" + value2 +
+                                "&value3=" + value3;
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", ifttt_url, true);
