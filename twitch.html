@@ -5,7 +5,7 @@
     <div style="padding-top:20%;width:66%;text-align:center;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
 
         <h1>Enter Channel Below:</h1><br>
-        <input name="channel" placeholder="e.g. misterrogers" size="35" onkeypress="return checkIfEnterPressed(event);" id="channel" style="width:75%;font-size:1em;border: none;border-bottom: solid 1px #333" type="text"> <button type="button" onclick="loadChannel()" id="button">Go</button>
+        <input name="channel" placeholder="e.g. COSMOS" size="35" onkeypress="return checkIfEnterPressed(event);" id="channel" style="width:75%;font-size:1em;border: none;border-bottom: solid 1px #333" type="text"> <button type="button" onclick="loadChannel()" id="button">Go</button>
     </div>
 </div>
 
@@ -16,7 +16,7 @@
 //Load Channel
 function loadChannel(channel) {
     if (!channel) channel = document.getElementById('channel').value;
-    if (!channel) channel = "misterrogers";
+    if (!channel) channel = "COSMOS";
     document.write(`<style>
     iframe { margin:0; padding:0; display: inline-block; }
     body { margin:0; padding:0; }
